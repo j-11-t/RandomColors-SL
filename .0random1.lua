@@ -5,6 +5,7 @@ util.require_natives(1660775568)
 
 local response = false
 local localVer = 8
+local scriptName = ".0random1"
 
 util.toast("Versión: " .. localVer)
 

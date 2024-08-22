@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 6
+local localVer = 7
 
 util.toast("Versión: " .. localVer)
 

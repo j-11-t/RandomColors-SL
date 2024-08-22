@@ -1,167 +1,85 @@
 util.require_natives(1660775568)
 
--- -- Script creado por snoopyloopy
-
-
--- local response = false
--- local localVer = 11
--- local scriptName = ".0random1"
-
--- util.toast("Versión: " .. localVer)
-
--- if not async_http.have_access() then
---     util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
---     util.stop_script()
--- end
-
--- -- Función para verificar la versión disponible
--- async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
---     currentVer = tonumber(output)
---     response = true
-
---     if localVer ~= currentVer then
---         -- Muestra el toast con la nueva versión disponible
---         util.toast("[.0random1] Hay una actualización disponible: v" .. currentVer ..)
-        
---         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
---             async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
---                 if not a or a == "" then
---                     util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
---                     return
---                 end
-                
---                 -- Guardar el script descargado en el archivo
---                 local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
---                 local f = io.open(filePath, "wb")
---                 if f then
---                     f:write(a)
---                     f:close()
---                     util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
---                     util.restart_script()
---                 else
---                     util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
---                 end
---             end)
---             async_http.dispatch()
---         end)
---     else
---         util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
---     end
--- end, function() 
---     response = true 
--- end)
-
-
-
-
-
-
--- --[[
---     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
---     currentKs = tostring(output)
---     response = true
---     if currentKs == "true" then
---         util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
---         util.yield(2000)
---         util.stop_script()
---     else 
---         util.yield(5)
---     end
--- end, function() response = true end)
--- ]]
--- async_http.dispatch()
-
--- repeat 
---     util.yield()
--- until response
-
--- --[[ 
---     Adding In a Future Update
---     resources_dir = filesystem.resources_dir() .. '.0random1/'
--- ]]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+-- Script creado por snoopyloopy
 
 
 local response = false
-local localVer = 14
-local killSwitchURL = "raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua" -- Ajusta la ruta de acuerdo a tu repositorio
+local localVer = 16
+local scriptName = ".0random1"
 
 util.toast("Versión: " .. localVer)
 
--- Verificar el Kill Switch
-async_http.init("raw.githubusercontent.com", killSwitchURL, function(output)
-    local killSwitchStatus = tostring(output):lower()
+if not async_http.have_access() then
+    util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
+    util.stop_script()
+end
 
-    if killSwitchStatus == "true" then
-        util.toast("[.0random1] El Kill Switch está activo. Cerrando script...")
-        util.yield(2000)  -- Espera un poco para asegurar que el mensaje se muestre
-        util.stop_script()
-    else
-        -- Continuar con la verificación de versión y demás lógica
-        async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
-            currentVer = tonumber(output)
-            response = true
+-- Función para verificar la versión disponible
+async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
+    currentVer = tonumber(output)
+    response = true
 
-            if localVer ~= currentVer then
-                util.toast("[.0random1] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
+    if localVer ~= currentVer then
+        -- Muestra el toast con la nueva versión disponible
+        util.toast("[.0random1] Hay una actualización disponible: v" .. currentVer ..)
+        
+        menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+            async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+                if not a or a == "" then
+                    util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+                    return
+                end
                 
-                menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-                    async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
-                        if not a or a == "" then
-                            util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
-                            return
-                        end
-
-                        local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
-                        local f = io.open(filePath, "wb")
-                        if f then
-                            f:write(a)
-                            f:close()
-                            util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
-                            util.restart_script()
-                        else
-                            util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
-                        end
-                    end)
-                    async_http.dispatch()
-                end)
-            else
-                util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
-            end
-        end, function() 
-            response = true 
+                -- Guardar el script descargado en el archivo
+                local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                local f = io.open(filePath, "wb")
+                if f then
+                    f:write(a)
+                    f:close()
+                    util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+                    util.restart_script()
+                else
+                    util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                end
+            end)
+            async_http.dispatch()
         end)
+    else
+        util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
     end
 end, function() 
     response = true 
 end)
 
+
+
+
+
+
+--[[
+    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
+    currentKs = tostring(output)
+    response = true
+    if currentKs == "true" then
+        util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
+        util.yield(2000)
+        util.stop_script()
+    else 
+        util.yield(5)
+    end
+end, function() response = true end)
+]]
 async_http.dispatch()
 
 repeat 
     util.yield()
 until response
+
+--[[ 
+    Adding In a Future Update
+    resources_dir = filesystem.resources_dir() .. '.0random1/'
+]]
+
 
 
 

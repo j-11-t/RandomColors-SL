@@ -4,7 +4,7 @@ util.require_natives(1676318796)
 
 
 local response = false
-local localVer = 1.6
+local localVer = 1.7
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
@@ -15,22 +15,27 @@ async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/Color
         
         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
             async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
-                local err = select(2, assert(loadstring(a))) -- Usamos assert(loadstring(a))
-                
-                if err then
-                    util.toast("Hubo un fallo, por favor procede a la actualización manual con GitHub.")
+                if not a or a == "" then
+                    util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
                     return
                 end
                 
-                local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, "wb")
-                f:write(a)
-                f:close()
-
-                util.toast("Script actualizado, reiniciando el script :3")
-                util.restart_script()
+                -- Guardar el script descargado en el archivo
+                local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                local f = io.open(filePath, "wb")
+                if f then
+                    f:write(a)
+                    f:close()
+                    util.toast("Script actualizado correctamente. Reiniciando el script...")
+                    util.restart_script()
+                else
+                    util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                end
             end)
             async_http.dispatch()
         end)
+    else
+        util.toast("Tu script ya está actualizado.")
     end
 end, function() 
     response = true 

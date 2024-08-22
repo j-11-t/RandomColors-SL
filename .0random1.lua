@@ -4,8 +4,8 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 101
--- util.toast("Versión: " .. localVer)
+local localVer = 200
+util.toast("Versión: " .. localVer)
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
@@ -135,35 +135,35 @@ menu.action(Randomcolors, "Random secondary color", {}, "Set random secondary co
     VEHICLE.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(entities.get_user_vehicle_as_handle(), secondaryColor[1], secondaryColor[2], secondaryColor[3])
 end)
 
--- Ｒａｎｄｏｍ ｐｅａｒｌｅｓｃｅｎｔ
+-- -- Ｒａｎｄｏｍ ｐｅａｒｌｅｓｃｅｎｔ
 
--- Add the "Random pearlescent" option to the "random colors" submenu.
-menu.action(Randomcolors, "Random pearlescent", {}, "Set random pearlescent color", function()
-    -- Select a random color for the pearlescent.
-    local primaryColor, secondaryColor, pearlescentColor = generateRandomColors()
-    -- Update the vehicle pearlescent with the randomly selected color.
-    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(entities.get_user_vehicle_as_handle(), pearlescentColor)
-end)
+-- -- Add the "Random pearlescent" option to the "random colors" submenu.
+-- menu.action(Randomcolors, "Random pearlescent", {}, "Set random pearlescent color", function()
+--     -- Select a random color for the pearlescent.
+--     local primaryColor, secondaryColor, pearlescentColor = generateRandomColors()
+--     -- Update the vehicle pearlescent with the randomly selected color.
+--     VEHICLE.SET_VEHICLE_EXTRA_COLOURS(entities.get_user_vehicle_as_handle(), pearlescentColor)
+-- end)
 
 
--- Random primary and pearlescent
-menu.action(Randomcolors, "Random primary color and pearlescent", {}, "Set random primary and pearlescent color", function()
-    -- Select a random color for the pearlescent.
-    local primaryColor, secondaryColor, pearlescentColor = generateRandomColors()
-    -- Update the vehicle pearlescent with the randomly selected color.
-    VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(entities.get_user_vehicle_as_handle(), primaryColor[1], primaryColor[2], primaryColor[3])
-    VEHICLE.SET_VEHICLE_EXTRA_COLOURS(entities.get_user_vehicle_as_handle(), pearlescentColor)
-end)
+-- -- Random primary and pearlescent
+-- menu.action(Randomcolors, "Random primary color and pearlescent", {}, "Set random primary and pearlescent color", function()
+--     -- Select a random color for the pearlescent.
+--     local primaryColor, secondaryColor, pearlescentColor = generateRandomColors()
+--     -- Update the vehicle pearlescent with the randomly selected color.
+--     VEHICLE.SET_VEHICLE_CUSTOM_PRIMARY_COLOUR(entities.get_user_vehicle_as_handle(), primaryColor[1], primaryColor[2], primaryColor[3])
+--     VEHICLE.SET_VEHICLE_EXTRA_COLOURS(entities.get_user_vehicle_as_handle(), pearlescentColor)
+-- end)
 
---Shortcut Performance Upgrade
-menu.action(Randomcolors, "Performance upgrade", {}, "This is a shortcut to Vehicle Performance Upgrade menu of Stand. (Recommended after using 'Random Upgrade' to apply performance improvements.)", function(on)
-    menu.trigger_commands("performance")
-end)
+-- --Shortcut Performance Upgrade
+-- menu.action(Randomcolors, "Performance upgrade", {}, "This is a shortcut to Vehicle Performance Upgrade menu of Stand. (Recommended after using 'Random Upgrade' to apply performance improvements.)", function(on)
+--     menu.trigger_commands("performance")
+-- end)
 
---Shortcut Random Upgrade
-menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle Random Upgrade menu of Stand.", function(on)
-    menu.trigger_commands("randomtune")
-end)
+-- --Shortcut Random Upgrade
+-- menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle Random Upgrade menu of Stand.", function(on)
+--     menu.trigger_commands("randomtune")
+-- end)
 
 
 

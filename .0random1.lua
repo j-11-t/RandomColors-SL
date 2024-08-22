@@ -4,8 +4,8 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 27  -- Define la versión del script
-util.toast("Versión del script: " .. localVer) 
+local localVer = 100
+util.toast("Versión: " .. localVer)
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)

@@ -3,12 +3,13 @@ util.require_natives(1660775568)
 -- Script creado por snoopyloopy
 
 
+
 local response = false
-local localVer = 17
+local localVer = 18
 local scriptName = ".0random1"
 
+-- Muestra la versión actual en un toast
 util.toast("Versión: " .. localVer)
-
 if not async_http.have_access() then
     util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
     util.stop_script()
@@ -21,7 +22,7 @@ async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/Color
 
     if localVer ~= currentVer then
         -- Muestra el toast con la nueva versión disponible
-        util.toast("[.0random1] Hay una actualización disponible: v" .. currentVer ..)
+        util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
         
         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
             async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
@@ -57,6 +58,7 @@ end)
 
 
 
+--[[
     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
     currentKs = tostring(output)
     response = true
@@ -68,17 +70,17 @@ end)
         util.yield(5)
     end
 end, function() response = true end)
-
+]]
 async_http.dispatch()
 
 repeat 
     util.yield()
 until response
 
- 
+--[[ 
     Adding In a Future Update
     resources_dir = filesystem.resources_dir() .. '.0random1/'
-
+]]
 
 
 

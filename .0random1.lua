@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 9
+local localVer = 10
 local scriptName = ".0random1"
 
 util.toast("Versión: " .. localVer)
@@ -76,7 +76,7 @@ until response
 ]]
 
 
-
+menu.divider(menu.my_root(), scriptName .. " V" .. localVer)
 
 
 function generateRandomColors()

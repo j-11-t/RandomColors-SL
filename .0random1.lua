@@ -4,29 +4,37 @@ util.require_natives(1676318796)
 
 
 local response = false
-local localVer = 1.5
---local localKs = false
+local localVer = 1.6
+
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
     response = true
+
     if localVer ~= currentVer then
-        util.toast("[.0random1] Hay una actualizacion disponible, reinicia para actualizarlo.")
+        util.toast("[.0random1] Hay una actualización disponible, reinicia para actualizarlo.")
+        
         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-            async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua',function(a)
-                local err = select(2,load(a))
+            async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+                local err = select(2, assert(loadstring(a))) -- Usamos assert(loadstring(a))
+                
                 if err then
-                    util.toast("Hubo un fallo porfavor procede a la actualizacion manual con github.")
-                return end
-                local f = io.open(filesystem.scripts_dir()..SCRIPT_RELPATH, "wb")
+                    util.toast("Hubo un fallo, por favor procede a la actualización manual con GitHub.")
+                    return
+                end
+                
+                local f = io.open(filesystem.scripts_dir() .. SCRIPT_RELPATH, "wb")
                 f:write(a)
                 f:close()
+
                 util.toast("Script actualizado, reiniciando el script :3")
                 util.restart_script()
             end)
             async_http.dispatch()
         end)
     end
-end, function() response = true end)
+end, function() 
+    response = true 
+end)
 
 
 
@@ -47,6 +55,7 @@ end, function() response = true end)
 end, function() response = true end)
 ]]
 async_http.dispatch()
+
 repeat 
     util.yield()
 until response

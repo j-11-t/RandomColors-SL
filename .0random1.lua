@@ -4,7 +4,7 @@ util.require_natives(1676318796)
 
 
 local response = false
-local localVer = 1.7
+local localVer = 2
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)

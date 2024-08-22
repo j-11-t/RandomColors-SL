@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 16
+local localVer = 17
 local scriptName = ".0random1"
 
 util.toast("Versión: " .. localVer)
@@ -56,7 +56,7 @@ end)
 
 
 
---[[
+
     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
     currentKs = tostring(output)
     response = true
@@ -68,17 +68,17 @@ end)
         util.yield(5)
     end
 end, function() response = true end)
-]]
+
 async_http.dispatch()
 
 repeat 
     util.yield()
 until response
 
---[[ 
+ 
     Adding In a Future Update
     resources_dir = filesystem.resources_dir() .. '.0random1/'
-]]
+
 
 
 

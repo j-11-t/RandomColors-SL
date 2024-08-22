@@ -4,18 +4,21 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 201
+local localVer = 203
+
 util.toast("Versión: " .. localVer)
 
+-- Función para verificar la versión disponible
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
     response = true
 
     if localVer ~= currentVer then
-        util.toast("[.0random1] Hay una actualización disponible, reinicia para actualizarlo.")
+        -- Muestra el toast con la nueva versión disponible
+        util.toast("[.0random1] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
         
         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-            async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+            async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
                 if not a or a == "" then
                     util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
                     return
@@ -27,7 +30,7 @@ async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/Color
                 if f then
                     f:write(a)
                     f:close()
-                    util.toast("Script actualizado correctamente. Reiniciando el script...")
+                    util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
                     util.restart_script()
                 else
                     util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
@@ -36,7 +39,7 @@ async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/Color
             async_http.dispatch()
         end)
     else
-        util.toast("Tu script ya está actualizado.")
+        util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
     end
 end, function() 
     response = true 

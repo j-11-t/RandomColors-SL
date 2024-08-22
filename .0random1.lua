@@ -4,7 +4,7 @@ util.require_natives(1676318796)
 
 
 local response = false
-local localVer = 3
+local localVer = 3.1
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
@@ -154,7 +154,15 @@ menu.action(Randomcolors, "Random primary color and pearlescent", {}, "Set rando
     VEHICLE.SET_VEHICLE_EXTRA_COLOURS(entities.get_user_vehicle_as_handle(), pearlescentColor)
 end)
 
+--Shortcut Performance Upgrade
+menu.action(Randomcolors, "Performance upgrade", {}, "This is a shortcut to Vehicle Performance Upgrade menu of Stand. (Recommended after using 'Random Upgrade' to apply performance improvements.)", function(on)
+    menu.trigger_commands("performance")
+end)
 
+--Shortcut Random Upgrade
+menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle Random Upgrade menu of Stand.", function(on)
+    menu.trigger_commands("randomtune")
+end)
 
 
 

@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 5
+local localVer = 5.6
 util.toast("Versión: " .. localVer)
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
@@ -12,7 +12,7 @@ async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/Color
     response = true
 
     if localVer ~= currentVer then
-        util.toast("[.0random1] Hay una actualización disponible, reinicia para actualizarlo.")
+        util.toast("[.0random1] Hay una actualización disponible: Versión " .. currentVer .. ". Reinicia para actualizarlo.")
         
         menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
             async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)

@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 11.5
+local localVer = 5
 util.toast("Versión: " .. localVer)
 
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
@@ -47,14 +47,29 @@ end)
 
 
 
-
+--[[
+    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
+    currentKs = tostring(output)
+    response = true
+    if currentKs == "true" then
+        util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
+        util.yield(2000)
+        util.stop_script()
+    else 
+        util.yield(5)
+    end
+end, function() response = true end)
+]]
 async_http.dispatch()
 
 repeat 
     util.yield()
 until response
 
-
+--[[ 
+    Adding In a Future Update
+    resources_dir = filesystem.resources_dir() .. '.0random1/'
+]]
 
 
 

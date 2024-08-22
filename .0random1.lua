@@ -4,7 +4,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 7
+local localVer = 8
 
 util.toast("Versión: " .. localVer)
 
@@ -166,6 +166,10 @@ end)
 --Shortcut Random Upgrade
 menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle Random Upgrade menu of Stand.", function(on)
     menu.trigger_commands("randomtune")
+end)
+
+util.on_stop_script(function()
+    util.toast("Gracias por usar " .. scriptName .. "! Hasta la próxima.")
 end)
 
 

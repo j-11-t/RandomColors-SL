@@ -1,9 +1,10 @@
 util.require_natives(1660775568)
+util.require_natives(1676318796)
 -- Script creado por snoopyloopy
 
 
 local response = false
-local localVer = 1.3
+local localVer = 1.4
 --local localKs = false
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)

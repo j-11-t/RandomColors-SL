@@ -2,7 +2,40 @@ util.require_natives(1660775568)
 -- Script creado por snoopyloopy
 
 
+local response = false
+local localVer = 1.3
+--local localKs = false
+async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
+    currentVer = tonumber(output)
+    response = true
+    if localVer ~= currentVer then
+        util.toast("[.0random1] Hay una actualizacion disponible, reinicia para actualizarlo.")
+        menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+            async_http.init('raw.githubusercontent.com','/j-11-t/RandomColors-SL/main/.0random1.lua',function(a)
+                local err = select(2,load(a))
+                if err then
+                    util.toast("Hubo un fallo porfavor procede a la actualizacion manual con github.")
+                return end
+                local f = io.open(filesystem.scripts_dir()..SCRIPT_RELPATH, "wb")
+                f:write(a)
+                f:close()
+                util.toast("Script actualizado, reiniciando el script :3")
+                util.restart_script()
+            end)
+            async_http.dispatch()
+        end)
+    end
+end, function() response = true end)
 
+
+
+
+
+
+async_http.dispatch()
+repeat 
+    util.yield()
+until response
 
 
 

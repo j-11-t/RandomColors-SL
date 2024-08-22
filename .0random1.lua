@@ -104,7 +104,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 13
+local localVer = 14
 local killSwitchURL = "raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua" -- Ajusta la ruta de acuerdo a tu repositorio
 
 util.toast("Versión: " .. localVer)

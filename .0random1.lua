@@ -4,10 +4,15 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 10
+local localVer = 11
 local scriptName = ".0random1"
 
 util.toast("Versión: " .. localVer)
+
+if not async_http.have_access() then
+    util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
+    util.stop_script()
+end
 
 -- Función para verificar la versión disponible
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)

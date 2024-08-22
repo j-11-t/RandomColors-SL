@@ -4,7 +4,7 @@ util.require_natives(1676318796)
 
 
 local response = false
-local localVer = 1.4
+local localVer = 1.5
 --local localKs = false
 async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
     currentVer = tonumber(output)
@@ -124,17 +124,7 @@ end)
 
 
 
---Shortcut Performance Upgrade
-menu.action(Randomcolors, "Performance upgrade", {}, "This is a shortcut to Vehicle Performance Upgrade menu of Stand. (Recommended after using 'Random Upgrade' to apply performance improvements.)", function(on)
-    menu.trigger_commands("performance")
-end)
 
---Shortcut Random Upgrade
-menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle Random Upgrade menu of Stand.", function(on)
-    menu.trigger_commands("randomtune")
-end)
-
-util.toast("Randoms colors v2 NOTA: Solo se guarda el color primario")
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------

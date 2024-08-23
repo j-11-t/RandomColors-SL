@@ -113,7 +113,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 30
+local localVer = 31
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 local updateButtonCreated = false -- Variable para rastrear si el botón de actualización ya fue creado
@@ -148,7 +148,7 @@ local function checkForUpdates()
                         if f then
                             f:write(a)
                             f:close()
-                            util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+                            util.toast("Script actualizado a v" .. currentVer .. " Excelente :D")
                             util.restart_script()
                         else
                             util.toast("Error al guardar el script. Por favor, actualiza manualmente.")

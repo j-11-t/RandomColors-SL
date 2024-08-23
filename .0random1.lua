@@ -5,8 +5,9 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 22
+local localVer = 23
 local scriptName = ".0random1"
+local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 
 -- Muestra la versión actual en un toast
 util.toast("Versión: " .. localVer)
@@ -16,41 +17,51 @@ if not async_http.have_access() then
 end
 
 -- Función para verificar la versión disponible
-async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
-    currentVer = tonumber(output)
-    response = true
-
-    if localVer ~= currentVer then
-        -- Muestra el toast con la nueva versión disponible
-        util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
-        
-        menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-            async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
-                if not a or a == "" then
-                    util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
-                    return
-                end
-                
-                -- Guardar el script descargado en el archivo
-                local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
-                local f = io.open(filePath, "wb")
-                if f then
-                    f:write(a)
-                    f:close()
-                    util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
-                    util.restart_script()
-                else
-                    util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
-                end
+local function checkForUpdates()
+    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
+        local currentVer = tonumber(output)
+        if currentVer and localVer ~= currentVer then
+            -- Muestra el toast con la nueva versión disponible
+            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
+            
+            menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+                async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+                    if not a or a == "" then
+                        util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+                        return
+                    end
+                    
+                    -- Guardar el script descargado en el archivo
+                    local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                    local f = io.open(filePath, "wb")
+                    if f then
+                        f:write(a)
+                        f:close()
+                        util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+                        util.restart_script()
+                    else
+                        util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                    end
+                end)
+                async_http.dispatch()
             end)
-            async_http.dispatch()
-        end)
-    else
-        util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
-    end
-end, function() 
-    response = true 
-end)
+        else
+            util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
+        end
+    end, function() 
+        util.toast("Error al verificar la versión.")
+    end)
+    async_http.dispatch()
+end
+
+-- Verificación inicial
+checkForUpdates()
+
+-- Verificar la versión cada intervalo de tiempo definido
+while true do
+    util.yield(versionCheckInterval)
+    checkForUpdates()
+end
 
 
 
@@ -89,7 +100,7 @@ until response
 
 
 
-menu.divider(menu.my_root(), scriptName .. " V" .. localVer)
+menu.divider(menu.my_root(), scriptName .. " V-" .. localVer)
 
 
 function generateRandomColors()

@@ -1,61 +1,86 @@
--- Configuración
+util.require_natives(1660775568)
+
+-- Script creado por snoopyloopy
+
+
+
 local response = false
-local localVer = 19
-local versionURL = "https://raw.githubusercontent.com/j-11-t/RandomColors-SL/main/ColorsVersion.lua"
-local scriptURL = "https://raw.githubusercontent.com/j-11-t/RandomColors-SL/main/.0random1.lua"
+local localVer = 20
+local scriptName = ".0random1"
 
--- Mostrar la versión actual del script
-util.toast("Versión actual: " .. localVer)
-
--- Función para actualizar el script
-local function updateScript(newVersion)
-    util.toast("[.0random1] Hay una actualización disponible: v" .. newVersion .. ". Reiniciando para actualizar...")
-
-    -- Descargar el script actualizado
-    async_http.init(scriptURL, function(scriptContent)
-        if scriptContent == nil or scriptContent == "" then
-            util.toast("Error: No se pudo descargar el script. Actualiza manualmente desde GitHub.")
-            return
-        end
-
-        -- Guardar el script actualizado en el archivo correspondiente
-        local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
-        local file = io.open(filePath, "wb")
-        if file then
-            file:write(scriptContent)
-            file:close()
-            util.toast("Script actualizado a v" .. newVersion .. ". Reiniciando el script...")
-            util.restart_script()
-        else
-            util.toast("Error: No se pudo guardar el script. Actualiza manualmente desde GitHub.")
-        end
-    end, function() 
-        util.toast("Error: La solicitud HTTP falló. Intenta de nuevo más tarde.")
-    end)
-    async_http.dispatch()
+-- Muestra la versión actual en un toast
+util.toast("Versión: " .. localVer)
+if not async_http.have_access() then
+    util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
+    util.stop_script()
 end
 
--- Verificar la versión disponible
-async_http.init(versionURL, function(output)
-    local currentVer = tonumber(output)
+-- Función para verificar la versión disponible
+async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
+    currentVer = tonumber(output)
     response = true
 
-    -- Compara la versión local con la versión en el servidor
-    if currentVer and localVer ~= currentVer then
-        updateScript(currentVer)
+    if localVer ~= currentVer then
+        -- Muestra el toast con la nueva versión disponible
+        util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
+        
+        menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+            async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+                if not a or a == "" then
+                    util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+                    return
+                end
+                
+                -- Guardar el script descargado en el archivo
+                local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                local f = io.open(filePath, "wb")
+                if f then
+                    f:write(a)
+                    f:close()
+                    util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+                    util.restart_script()
+                else
+                    util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                end
+            end)
+            async_http.dispatch()
+        end)
     else
         util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
     end
-end, function()
-    util.toast("Error: No se pudo verificar la versión. Intenta de nuevo más tarde.")
-    response = true
+end, function() 
+    response = true 
 end)
+
+
+
+
+
+
+
+--[[
+    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
+    currentKs = tostring(output)
+    response = true
+    if currentKs == "true" then
+        util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
+        util.yield(2000)
+        util.stop_script()
+    else 
+        util.yield(5)
+    end
+end, function() response = true end)
+]]
 async_http.dispatch()
 
--- Esperar a que finalice la solicitud HTTP
-repeat
+repeat 
     util.yield()
 until response
+
+--[[ 
+    Adding In a Future Update
+    resources_dir = filesystem.resources_dir() .. '.0random1/'
+]]
 
 
 

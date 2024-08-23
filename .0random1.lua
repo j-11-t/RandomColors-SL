@@ -5,7 +5,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 18
+local localVer = 22
 local scriptName = ".0random1"
 
 -- Muestra la versión actual en un toast

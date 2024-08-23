@@ -113,7 +113,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 34
+local localVer = 35.1
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 local versionFileName = "ColorsVersion.txt"
@@ -193,7 +193,7 @@ util.create_thread(function()
 end)
 
 -- Código del script principal
-menu.divider(menu.my_root(), scriptName .. " V" .. localVer)
+menu.divider(menu.my_root(), scriptName .. " v" .. localVer)
 
 
 function generateRandomColors()

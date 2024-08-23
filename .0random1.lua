@@ -113,7 +113,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 32
+local localVer = 33
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 local updateButtonCreated = false -- Variable para rastrear si el botón de actualización ya fue creado
@@ -131,7 +131,7 @@ local function checkForUpdates()
         local currentVer = tonumber(output)
         if currentVer and localVer ~= currentVer then
             -- Muestra el toast con la nueva versión disponible
-            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. "Actualiza lo más pronto posible :D")
+            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. " Actualiza lo más pronto posible :D")
             
             -- Solo crea el botón si no se ha creado aún
             if not updateButtonCreated then

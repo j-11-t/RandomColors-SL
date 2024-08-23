@@ -113,10 +113,10 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 35.1
+local localVer = 35.2
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
-local versionFileName = "ColorsVersion.txt"
+
 local updateButtonCreated = false -- Variable para rastrear si el botón de actualización ya fue creado
 
 -- Muestra la versión actual en un toast

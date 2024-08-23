@@ -4,8 +4,116 @@ util.require_natives(1660775568)
 
 
 
+-- local response = false
+-- local localVer = 26
+-- local scriptName = ".0random1"
+-- local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
+
+-- -- Muestra la versión actual en un toast
+-- util.toast("Versión: " .. localVer)
+-- if not async_http.have_access() then
+--     util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
+--     util.stop_script()
+-- end
+
+-- -- Función para verificar la versión disponible
+-- local function checkForUpdates()
+--     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
+--         local currentVer = tonumber(output)
+--         if currentVer and localVer ~= currentVer then
+--             -- Muestra el toast con la nueva versión disponible
+--             util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
+            
+--             menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+--                 async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+--                     if not a or a == "" then
+--                         util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+--                         return
+--                     end
+                    
+--                     -- Guardar el script descargado en el archivo
+--                     local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+--                     local f = io.open(filePath, "wb")
+--                     if f then
+--                         f:write(a)
+--                         f:close()
+--                         util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+--                         util.restart_script()
+--                     else
+--                         util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+--                     end
+--                 end)
+--                 async_http.dispatch() -- Despacha la solicitud de descarga
+--             end)
+--         else
+--             util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
+--         end
+--     end, function() 
+--         util.toast("Error al verificar la versión.")
+--     end)
+--     async_http.dispatch() -- Despacha la solicitud de verificación de versión
+-- end
+
+-- -- Verificación inicial
+-- checkForUpdates()
+
+-- -- Verificar la versión cada intervalo de tiempo definido
+-- while true do
+--     util.yield(versionCheckInterval)
+--     checkForUpdates()
+-- end
+
+
+
+
+-- --[[
+--     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
+--     currentKs = tostring(output)
+--     response = true
+--     if currentKs == "true" then
+--         util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
+--         util.yield(2000)
+--         util.stop_script()
+--     else 
+--         util.yield(5)
+--     end
+-- end, function() response = true end)
+-- ]]
+-- async_http.dispatch()
+
+-- repeat 
+--     util.yield()
+-- until response
+
+-- --[[ 
+--     Adding In a Future Update
+--     resources_dir = filesystem.resources_dir() .. '.0random1/'
+-- ]]
+
+
+
+
+
+
+
+
+-- menu.divider(menu.my_root(), scriptName .. " V" .. localVer)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 local response = false
-local localVer = 26
+local localVer = 27
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 
@@ -54,49 +162,31 @@ local function checkForUpdates()
     async_http.dispatch() -- Despacha la solicitud de verificación de versión
 end
 
--- Verificación inicial
-checkForUpdates()
-
--- Verificar la versión cada intervalo de tiempo definido
-while true do
-    util.yield(versionCheckInterval)
-    checkForUpdates()
+-- Función para verificar el KillSwitch
+local function checkKillSwitch()
+    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
+        local currentKs = tostring(output)
+        if currentKs == "true" then
+            util.toast("[" .. scriptName .. "] El KillSwitch está activo, cerrando script...")
+            util.yield(2000)
+            util.stop_script()
+        end
+    end, function()
+        util.toast("Error al verificar el KillSwitch.")
+    end)
+    async_http.dispatch() -- Despacha la solicitud de verificación del KillSwitch
 end
 
-
-
-
---[[
-    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
-    currentKs = tostring(output)
-    response = true
-    if currentKs == "true" then
-        util.toast("[.0random1] El KillSwitch esta activo, cerrando script...")
-        util.yield(2000)
-        util.stop_script()
-    else 
-        util.yield(5)
+-- Verificación inicial de actualizaciones y KillSwitch en segundo plano
+util.create_thread(function()
+    while true do
+        checkForUpdates()
+        checkKillSwitch()
+        util.yield(versionCheckInterval) -- Espera entre verificaciones
     end
-end, function() response = true end)
-]]
-async_http.dispatch()
+end)
 
-repeat 
-    util.yield()
-until response
-
---[[ 
-    Adding In a Future Update
-    resources_dir = filesystem.resources_dir() .. '.0random1/'
-]]
-
-
-
-
-
-
-
-
+-- Código del script principal
 menu.divider(menu.my_root(), scriptName .. " V" .. localVer)
 
 

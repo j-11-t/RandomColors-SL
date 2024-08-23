@@ -5,7 +5,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 25
+local localVer = 26
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 

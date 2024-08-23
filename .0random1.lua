@@ -113,9 +113,10 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 29
+local localVer = 30
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
+local updateButtonCreated = false -- Variable para rastrear si el botón de actualización ya fue creado
 
 -- Muestra la versión actual en un toast
 util.toast("Versión: " .. localVer)
@@ -130,31 +131,35 @@ local function checkForUpdates()
         local currentVer = tonumber(output)
         if currentVer and localVer ~= currentVer then
             -- Muestra el toast con la nueva versión disponible
-            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Reinicia para actualizarlo.")
+            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Actualiza lo más pronto posible :D")
             
-            menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-                async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
-                    if not a or a == "" then
-                        util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
-                        return
-                    end
-                    
-                    -- Guardar el script descargado en el archivo
-                    local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
-                    local f = io.open(filePath, "wb")
-                    if f then
-                        f:write(a)
-                        f:close()
-                        util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
-                        util.restart_script()
-                    else
-                        util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
-                    end
+            -- Solo crea el botón si no se ha creado aún
+            if not updateButtonCreated then
+                menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
+                    async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
+                        if not a or a == "" then
+                            util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+                            return
+                        end
+                        
+                        -- Guardar el script descargado en el archivo
+                        local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                        local f = io.open(filePath, "wb")
+                        if f then
+                            f:write(a)
+                            f:close()
+                            util.toast("Script actualizado a v" .. currentVer .. ". Reiniciando el script...")
+                            util.restart_script()
+                        else
+                            util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                        end
+                    end)
+                    async_http.dispatch() -- Despacha la solicitud de descarga
                 end)
-                async_http.dispatch() -- Despacha la solicitud de descarga
-            end)
+                updateButtonCreated = true -- Marca que el botón ya fue creado
+            end
         else
-            util.toast("Tu script ya está actualizado a v" .. localVer .. ".")
+            -- No se hace nada si no hay actualización disponible
         end
     end, function() 
         util.toast("Error al verificar la versión.")
@@ -167,7 +172,7 @@ local function checkKillSwitch()
     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
         local currentKs = tostring(output)
         if currentKs == "true" then
-            util.toast("[" .. scriptName .. "] El KillSwitch está activo, cerrando script...")
+            util.toast("[" .. scriptName .. "] Script desactivado por seguridad :D")
             util.yield(2000)
             util.stop_script()
         end

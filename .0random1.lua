@@ -113,7 +113,7 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 3.1
+local localVer = 3.2
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 
@@ -204,48 +204,6 @@ end)
 --nombre y version
 menu.divider(menu.my_root(), scriptName .. " v" .. localVer)
 
-
-
-
-
--- script info
-local scriptInfoMenu = menu.list(menu.my_root(), "Acerca de .0random1", {}, "Información y opciones sobre el script.")
-
--- nombre y version
-menu.divider(scriptInfoMenu, ".0random1")
-menu.readonly(scriptInfoMenu, "Versión", localVer)
-
--- verificar actualizaciones manual
-menu.action(scriptInfoMenu, "Buscar Actualización", {}, "El script verificará automáticamente actualizaciones cada minuto, pero puedes hacerlo manualmente con esta opción.", function()
-    async_http.init("raw.githubusercontent.com", "link de la version del script", function(output)
-        local currentVer = tonumber(output)
-        if currentVer and localVer ~= currentVer then
-            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Actualiza lo más pronto posible :D")
-        else
-            util.toast("[" .. scriptName .. "] Tu script ya está actualizado a v" .. localVer .. ".")
-        end
-    end, function()
-        util.toast("Error al verificar la versión.")
-    end)
-    async_http.dispatch()
-end)
-
--- Enlaces
-menu.hyperlink(scriptInfoMenu, "Código Fuente en GitHub", "https://github.com/j-11-t/RandomColors-SL", "Ver los archivos fuente en GitHub")
-menu.hyperlink(scriptInfoMenu, "Servidor de Discord", "https://", "Únete al servidor de Discord")
-
-
---seccion creditos
-menu.divider(scriptInfoMenu, "Créditos")
-
---creditos d-brutal
-local JT = menu.list(scriptInfoMenu, "D-Brutal", {})
-menu.hyperlink(JT, "Youtube", "https://www.youtube.com")
-menu.hyperlink(JT, "Discord", "https://")
-
---otro integrante
--- menu.action(scriptInfoMenu, "Nombre", {}, "", function()
--- end)
 
 
 function generateRandomColors()
@@ -339,6 +297,46 @@ menu.action(Randomcolors, "Random upgrade", {}, "This is a shortcut to Vehicle R
 end)
 
 
+
+
+-- script info
+local scriptInfoMenu = menu.list(menu.my_root(), "Acerca de .0random1", {}, "Información y opciones sobre el script.")
+
+-- nombre y version
+menu.divider(scriptInfoMenu, ".0random1")
+menu.readonly(scriptInfoMenu, "Versión", localVer)
+
+-- verificar actualizaciones manual
+menu.action(scriptInfoMenu, "Buscar Actualización", {}, "El script verificará automáticamente actualizaciones cada minuto, pero puedes hacerlo manualmente con esta opción.", function()
+    async_http.init("raw.githubusercontent.com", "link de la version del script", function(output)
+        local currentVer = tonumber(output)
+        if currentVer and localVer ~= currentVer then
+            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Actualiza lo más pronto posible :D")
+        else
+            util.toast("[" .. scriptName .. "] Tu script ya está actualizado a v" .. localVer .. ".")
+        end
+    end, function()
+        util.toast("Error al verificar la versión.")
+    end)
+    async_http.dispatch()
+end)
+
+-- Enlaces
+menu.hyperlink(scriptInfoMenu, "Código Fuente en GitHub", "https://github.com/j-11-t/RandomColors-SL", "Ver los archivos fuente en GitHub")
+menu.hyperlink(scriptInfoMenu, "Servidor de Discord", "https://", "Únete al servidor de Discord")
+
+
+--seccion creditos
+menu.divider(scriptInfoMenu, "Créditos")
+
+--creditos d-brutal
+local JT = menu.list(scriptInfoMenu, "JT", {})
+menu.hyperlink(JT, "Youtube", "https://www.youtube.com")
+menu.hyperlink(JT, "Discord", "https://")
+
+--otro integrante
+-- menu.action(scriptInfoMenu, "Nombre", {}, "", function()
+-- end)
 
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------

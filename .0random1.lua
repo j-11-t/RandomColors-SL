@@ -113,62 +113,71 @@ util.require_natives(1660775568)
 
 
 local response = false
-local localVer = 36
+local localVer = 3.1
 local scriptName = ".0random1"
 local versionCheckInterval = 60000 -- 60 segundos (1 minuto)
 
 local updateButtonCreated = false -- Variable para rastrear si el botón de actualización ya fue creado
 
--- Muestra la versión actual en un toast
+--noti de version y activar acceso a internet
 util.toast("Versión: " .. localVer)
 if not async_http.have_access() then
     util.toast("Para utilizar el script desactiva la casilla 'Desactivar acceso a internet'", TOAST_ALL)
     util.stop_script()
 end
 
--- Función para verificar la versión disponible
+--verificar la versión disponible
 local function checkForUpdates()
     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(output)
         local currentVer = tonumber(output)
         if currentVer and localVer ~= currentVer then
-            -- Muestra el toast con la nueva versión disponible
+            -- Muestra nueva version disponible
             util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. " Actualiza lo más pronto posible :D")
-            
-            -- Solo crea el botón si no se ha creado aún
             if not updateButtonCreated then
                 menu.action(menu.my_root(), "Actualizar Lua", {}, "", function()
-                    async_http.init('raw.githubusercontent.com', '/j-11-t/RandomColors-SL/main/.0random1.lua', function(a)
-                        if not a or a == "" then
-                            util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
-                            return
-                        end
-                        
-                        -- Guardar el script descargado en el archivo
-                        local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
-                        local f = io.open(filePath, "wb")
-                        if f then
-                            f:write(a)
-                            f:close()
-                            util.toast("Script actualizado a v" .. currentVer .. " Excelente :D")
-                            util.restart_script()
+                    -- Verifica antes de descargar
+                    async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/ColorsVersion.lua", function(newVersionOutput)
+                        local latestVer = tonumber(newVersionOutput)
+                        if latestVer and localVer ~= latestVer then
+                            -- Descarga la nueva version
+                            async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/.0random1.lua", function(a)
+                                if not a or a == "" then
+                                    util.toast("Hubo un fallo al descargar el script. Por favor, actualiza manualmente desde GitHub.")
+                                    return
+                                end
+                                
+                                -- guardado y noti de version
+                                local filePath = filesystem.scripts_dir() .. SCRIPT_RELPATH
+                                local f = io.open(filePath, "wb")
+                                if f then
+                                    f:write(a)
+                                    f:close()
+                                    util.toast("Script actualizado a v" .. latestVer .. " Excelente :D")
+                                    util.restart_script()
+                                else
+                                    util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                                end
+                            end)
+                            async_http.dispatch()
                         else
-                            util.toast("Error al guardar el script. Por favor, actualiza manualmente.")
+                            util.toast("No se encontró una versión más reciente.")
                         end
+                    end, function() 
+                        util.toast("Error al verificar la versión antes de la descarga.")
                     end)
-                    async_http.dispatch() -- Despacha la solicitud de descarga
+                    async_http.dispatch()
                 end)
-                updateButtonCreated = true -- Marca que el botón ya fue creado
+                updateButtonCreated = true
             end
         else
-            -- No se hace nada si no hay actualización disponible
         end
     end, function() 
         util.toast("Error al verificar la versión.")
     end)
-    async_http.dispatch() -- Despacha la solicitud de verificación de versión
+    async_http.dispatch()
 end
 
--- Función para verificar el KillSwitch
+--KillSwitch
 local function checkKillSwitch()
     async_http.init("raw.githubusercontent.com", "/j-11-t/RandomColors-SL/main/KillSwitch.lua", function(output)
         local currentKs = tostring(output)
@@ -180,20 +189,63 @@ local function checkKillSwitch()
     end, function()
         util.toast("Error al verificar el KillSwitch.")
     end)
-    async_http.dispatch() -- Despacha la solicitud de verificación del KillSwitch
+    async_http.dispatch()
 end
 
--- Verificación inicial de actualizaciones y KillSwitch en segundo plano
+--actualizaciones y KillSwitch en segundo plano
 util.create_thread(function()
     while true do
         checkForUpdates()
         checkKillSwitch()
-        util.yield(versionCheckInterval) -- Espera entre verificaciones
+        util.yield(versionCheckInterval)
     end
 end)
 
--- Código del script principal
+--nombre y version
 menu.divider(menu.my_root(), scriptName .. " v" .. localVer)
+
+
+
+
+
+-- script info
+local scriptInfoMenu = menu.list(menu.my_root(), "Acerca de .0random1", {}, "Información y opciones sobre el script.")
+
+-- nombre y version
+menu.divider(scriptInfoMenu, ".0random1")
+menu.readonly(scriptInfoMenu, "Versión", localVer)
+
+-- verificar actualizaciones manual
+menu.action(scriptInfoMenu, "Buscar Actualización", {}, "El script verificará automáticamente actualizaciones cada minuto, pero puedes hacerlo manualmente con esta opción.", function()
+    async_http.init("raw.githubusercontent.com", "link de la version del script", function(output)
+        local currentVer = tonumber(output)
+        if currentVer and localVer ~= currentVer then
+            util.toast("[" .. scriptName .. "] Hay una actualización disponible: v" .. currentVer .. ". Actualiza lo más pronto posible :D")
+        else
+            util.toast("[" .. scriptName .. "] Tu script ya está actualizado a v" .. localVer .. ".")
+        end
+    end, function()
+        util.toast("Error al verificar la versión.")
+    end)
+    async_http.dispatch()
+end)
+
+-- Enlaces
+menu.hyperlink(scriptInfoMenu, "Código Fuente en GitHub", "https://github.com/j-11-t/RandomColors-SL", "Ver los archivos fuente en GitHub")
+menu.hyperlink(scriptInfoMenu, "Servidor de Discord", "https://", "Únete al servidor de Discord")
+
+
+--seccion creditos
+menu.divider(scriptInfoMenu, "Créditos")
+
+--creditos d-brutal
+local JT = menu.list(scriptInfoMenu, "D-Brutal", {})
+menu.hyperlink(JT, "Youtube", "https://www.youtube.com")
+menu.hyperlink(JT, "Discord", "https://")
+
+--otro integrante
+-- menu.action(scriptInfoMenu, "Nombre", {}, "", function()
+-- end)
 
 
 function generateRandomColors()
